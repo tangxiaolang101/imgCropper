@@ -1,0 +1,60 @@
+<html>
+
+<head>
+  <link rel="stylesheet" type="" href="./cropper.min.css">
+  <script src="./jquery.js"></script>
+  <style>
+    .container {
+      max-width: 640px;
+    }
+    
+    img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <img src="https://raw.githubusercontent.com/tangxiaolang101/imageView/master/1.png" id="myImage" alt="">
+  </div>
+  <button type="" id="cutYou">cutYOU</button>
+  <input type="file" id="openFile">
+</body>
+<script src="./cropper.min.js"></script>
+<script>
+  var $image = $('#myImage');
+  var options = {
+    viewMode: 1,
+    dragMode: 'crop',
+    center: true
+  }
+
+  $image.cropper(options);
+
+  $('#cutYou').click(function () {
+    console.log(1);
+    var croppedCanvas;
+    croppedCanvas = $image.cropper('getCroppedCanvas').toDataURL();
+    console.log(croppedCanvas);
+  });
+  $('#openFile').change(function () {
+    console.log($(this));
+    var file = $(this).get(0).files[0];
+    var fileReader = new FileReader();
+    if (file && file.type.match('image')) {
+      fileReader.readAsDataURL(file);
+      fileReader.onload = function (e) {
+        console.log(e.target.result);
+        $image.attr('src', e.target.result);
+        $image.cropper("reset").cropper('replace', e.target.result);
+      }
+    }
+
+
+
+    console.log(file);
+  });
+</script>
+
+</html>
